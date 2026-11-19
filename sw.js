@@ -1,4 +1,4 @@
-const CACHE_NAME = 'speech-timer-v1.5.3';
+const CACHE_NAME = 'speech-timer-v1.5.3-2';
 const CORE_ASSETS = [
   './',
   './index.html',

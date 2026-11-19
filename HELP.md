@@ -34,6 +34,8 @@ To time a speech with non-standard durations:
 
 ## 📝 Editing the Speech Log
 
+The newest speaker is always at the top: days run newest first, and so do the speeches within each day. The log jumps back to the top whenever a speech is recorded, and whenever you open the log or switch full screen on or off.
+
 After clicking **Finished**, each speech is recorded in the Speech Log at the bottom. Every entry is fully editable:
 
 - **Speaker name** — click the name field to correct it
@@ -129,6 +131,7 @@ The timer uses the standard Toastmasters traffic-light system:
 - Tick **Competition mode** on the main screen before (or during) a speech
 - The time, the phase label, the progress bar and the colour hints are all hidden, so the speaker sees **only the colour**
 - Timing and recording carry on as normal: press **Finished** and the actual time goes into the Speech Log
+- The **overtime alarm** and **overtime flashing** are switched off while it is on, and your previous choices come back when you turn it off
 - It is not remembered, so it switches off when the app is reloaded
 
 ---
@@ -162,7 +165,7 @@ This timer can be installed as a standalone app on your phone or computer. See t
 | v1.5.0 | Fixed ko-fi widget offline caching, added optional phase-change sound cues (off by default), undo for deleted log entries, bigger sticky title with a second sticky timer block underneath, unbolded sub-header lines |
 | v1.5.1 | Fixed mobile speech log alignment — Type now gets a label so it lines up with Time/Red, and the delete (✕) button sits at the right of the name row instead of the left |
 | v1.5.2 | Added a full-screen button to the Speech Log toolbar; renamed "Export CSV" to "Export" |
-| v1.5.3 | Added "Count down to red" setting (goes negative past red, e.g. -0:01) and a colour-only Competition mode that hides the time |
+| v1.5.3 | Added "Count down to red" setting (goes negative past red, e.g. -0:01) and a colour-only Competition mode that hides the time and switches off the overtime alarm and flashing (restored afterwards); Speech Log shows the newest speaker first within each day and jumps to the top on save and reopen |
 
 ---
 

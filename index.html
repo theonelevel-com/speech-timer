@@ -143,8 +143,8 @@
   .checkbox-row label { font-size: 0.85rem; cursor: pointer; min-width: unset; }
   .epilepsy-note { display: block; width: 100%; font-size: 0.66rem; opacity: 0.45; font-style: italic; margin-left: 28px; margin-top: 2px; }
 
-  .flash-row label.disabled-label { opacity: 0.35; cursor: not-allowed; }
-  .flash-row input:disabled { cursor: not-allowed; opacity: 0.35; }
+  .checkbox-row label.disabled-label { opacity: 0.35; cursor: not-allowed; }
+  .checkbox-row input:disabled { cursor: not-allowed; opacity: 0.35; }
 
   .btn-row { display: flex; gap: 10px; margin-top: 10px; }
   .btn {
@@ -280,6 +280,7 @@
   .footer { margin-top: auto; padding: 16px 0 12px; text-align: center; line-height: 1.3; }
   .footer a, .footer span { font-size: 0.78rem; color: inherit; opacity: 0.5; text-decoration: none; transition: opacity 0.2s; }
   .footer a:hover { opacity: 0.85; text-decoration: underline; }
+  .footer .btn-container { margin: 8px 0; } /* breathing room under the version line and under the coffee button */
   .footer a.kofi-button, .footer a.kofi-button:hover { opacity: 1; text-decoration: none; color: #fff !important; }
 
   /* Top button bar */
@@ -552,21 +553,19 @@
   </div>
 
   <div class="control-row checkbox-row">
-    <input type="checkbox" id="competitionToggle">
-    <label for="competitionToggle"><strong>Competition</strong> mode (colour only, time hidden)</label>
-  </div>
-
-  <div style="font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; opacity:0.6; margin-bottom:6px; margin-top:4px;">Overtime</div>
-
-  <div class="control-row checkbox-row">
     <input type="checkbox" id="alarmToggle">
-    <label for="alarmToggle"><strong>Overtime</strong> alarm (every 15s after red +30s)</label>
+    <label for="alarmToggle" id="alarmLabel"><strong>Overtime</strong> alarm (every 15s after red +30s)</label>
   </div>
 
   <div class="control-row checkbox-row flash-row">
     <input type="checkbox" id="flashToggle" checked disabled>
     <label for="flashToggle" id="flashLabel" class="disabled-label"><strong>Overtime</strong> flashing (1 min+ past red)</label>
     <span class="epilepsy-note">[Epilepsy safe frequency]</span>
+  </div>
+
+  <div class="control-row checkbox-row">
+    <input type="checkbox" id="competitionToggle">
+    <label for="competitionToggle"><strong>Competition</strong> mode (colour only, time hidden)</label>
   </div>
 
   <div class="btn-row">
@@ -832,7 +831,7 @@ function startAlarmRepeat() {
   playAlarmSound();
   alarmRepeatInterval = setInterval(() => { if (alarmToggle.checked && running) playAlarmSound(); else stopAlarmRepeat(); }, 15000);
 }
-function enableFlashToggle() { flashToggle.disabled = false; flashLabel.classList.remove('disabled-label'); }
+function enableFlashToggle() { if (competitionOn()) return; flashToggle.disabled = false; flashLabel.classList.remove('disabled-label'); }
 function disableFlashToggle() { flashToggle.disabled = true; flashLabel.classList.add('disabled-label'); }
 
 function updatePhaseFromElapsed() {
@@ -899,7 +898,7 @@ function getOrCreateDateGroup(dateStr) {
     }));
     group.remove(); checkEmpty(); saveLog();
     showUndoToast('Deleted ' + entries.length + ' entr' + (entries.length === 1 ? 'y' : 'ies') + ' for ' + dateStr + '.', () => {
-      entries.forEach(e => addLogEntry(e.name, e.typeVal, e.timeSec, e.redSec, dateStr));
+      entries.slice().reverse().forEach(e => addLogEntry(e.name, e.typeVal, e.timeSec, e.redSec, dateStr));
     });
   });
   bar.appendChild(delBtn);
@@ -1004,10 +1003,8 @@ function addLogEntry(name, typeVal, timeSec, redSec, dateStr) {
   });
   mi.addEventListener('change', () => recalcEntry(entry));
 
-  group.appendChild(entry);
-  if (!logPanel.classList.contains('hidden')) {
-    logPanel.scrollTop = logPanel.scrollHeight;
-  }
+  group.insertBefore(entry, group.querySelector('.log-date-bar').nextSibling);
+  logPanel.scrollTop = 0; // newest speaker is at the top: always land there after a save
   saveLog();
   rememberSpeaker(name);
 }
@@ -1020,7 +1017,7 @@ function saveLog() {
       const dateStr = g.dataset.date;
       const entries = [];
       g.querySelectorAll('.log-entry').forEach(e => {
-        entries.push({
+        entries.unshift({
           name: e.querySelector('.le-name input').value,
           type: e.querySelector('.le-type select').value,
           time: e.querySelector('.le-time input').value,
@@ -1067,7 +1064,8 @@ function doResetImmediate() {
   document.body.className = ''; currentPhase = 'white';
   if (isDark) document.body.classList.add('dark-mode');
   activeIndicator = 'white';
-  flashToggle.checked = true; disableFlashToggle();
+  if (competitionOn()) savedOvertime.flash = true; else flashToggle.checked = true;
+  disableFlashToggle();
   const sdb = document.getElementById('scriptDemoBtn');
   if (sdb) { sdb.disabled = false; sdb.textContent = '▶ Run Demo'; }
 }
@@ -1129,7 +1127,10 @@ resetBtn.addEventListener('click', () => { if (elapsedSeconds > 0) showResetDial
 $('dialogFinish').addEventListener('click', () => { hideResetDialog(); if (isDemo) doResetImmediate(); else finishSpeech(); });
 $('dialogReset').addEventListener('click', () => { hideResetDialog(); doResetImmediate(); });
 $('dialogCancel').addEventListener('click', hideResetDialog);
-logToggle.addEventListener('click', () => { const h = logPanel.classList.toggle('hidden'); logToggle.classList.toggle('collapsed', h); });
+logToggle.addEventListener('click', () => {
+  const h = logPanel.classList.toggle('hidden'); logToggle.classList.toggle('collapsed', h);
+  if (!h) logPanel.scrollTop = 0; // reopening always starts at the newest speaker
+});
 
 // ── Timer Script panel ──
 $('timerScriptBtn').addEventListener('click', () => { $('scriptPanel').classList.toggle('open'); });
@@ -1172,8 +1173,31 @@ function loadCountDown() {
 $('settingsCountDown').addEventListener('change', () => applyCountDown($('settingsCountDown').checked));
 
 // ── Competition mode: colour only (per session, not remembered) ──
+// Competition mode also switches off the overtime alarm and flashing, and puts
+// the previous choices back when it is turned off.
+function competitionOn() { return $('competitionToggle').checked; }
+const savedOvertime = { alarm: false, flash: true };
 $('competitionToggle').addEventListener('change', () => {
-  document.documentElement.classList.toggle('competition', $('competitionToggle').checked);
+  const on = competitionOn();
+  document.documentElement.classList.toggle('competition', on);
+  const alarmLabel = $('alarmLabel');
+  if (on) {
+    savedOvertime.alarm = alarmToggle.checked; savedOvertime.flash = flashToggle.checked;
+    alarmToggle.checked = false; stopAlarmRepeat();
+    alarmToggle.disabled = true; alarmLabel.classList.add('disabled-label');
+    if (flashInterval) { stopFlashing(); setPhase('red'); }
+    flashToggle.checked = false; disableFlashToggle();
+  } else {
+    alarmToggle.disabled = false; alarmLabel.classList.remove('disabled-label');
+    alarmToggle.checked = savedOvertime.alarm;
+    flashToggle.checked = savedOvertime.flash;
+    if (flashingActive) enableFlashToggle();
+    if (running) {
+      const t = getTimes();
+      if (alarmToggle.checked && elapsedSeconds >= t.red + 30) startAlarmRepeat();
+      if (flashingActive && flashToggle.checked) startFlashing();
+    }
+  }
 });
 
 // ── Phase sound cues (default off) ──
@@ -1246,6 +1270,7 @@ function setLogFullscreen(on) {
   $('fullscreenBtn').textContent = on ? '⤡' : '⛶';
   $('fullscreenBtn').title = on ? 'Exit full screen' : 'Full screen';
   if (on) { logPanel.classList.remove('hidden'); logToggle.classList.remove('collapsed'); }
+  logPanel.scrollTop = 0;
 }
 $('fullscreenBtn').addEventListener('click', (e) => {
   e.stopPropagation();
