@@ -6,6 +6,10 @@ A web-based speech timer for Toastmasters meetings. Works in any browser, instal
 
 🌐 **Live app:** [https://theonelevel-com.github.io/speech-timer/](https://theonelevel-com.github.io/speech-timer/)
 
+📖 **Help Guide:** [HELP.md](./HELP.md), covering how to use the timer, install it as an app, and more
+
+🎥 **Timing on Zoom:** [Zoom Speech Timer Background](./ZOOM-BACKGROUND.md)
+
 ---
 
 ## Version
@@ -30,30 +34,9 @@ A web-based speech timer for Toastmasters meetings. Works in any browser, instal
 
 ---
 
-## Install as an App (PWA)
+## Install as an App
 
-### iPhone / iPad (Safari)
-
-1. Open the live link above in **Safari**
-2. Tap the **Share** button (square with arrow)
-3. Scroll down and tap **"Add to Home Screen"**
-4. Tap **"Add"** — the app appears on your home screen with the TM♥ icon
-
-### Android (Chrome)
-
-1. Open the live link above in **Chrome**
-2. Tap the **three-dot menu** (⋮) in the top right
-3. Tap **"Add to Home Screen"** or **"Install app"**
-4. Tap **"Install"** — the app appears in your app drawer
-
-### Desktop (Chrome / Edge)
-
-1. Open the live link in Chrome or Edge
-2. Click the **install icon** in the address bar (or go to Menu → "Install Speech Timer")
-3. The app opens in its own window and is available from your applications
-
-### Note
-Once installed, the app works fully offline — no internet connection needed at your Toastmasters meeting.
+The timer installs on iPhone, iPad, Android and desktop, and works offline once installed. Step-by-step instructions are in the **[Help Guide → Install as an App](./HELP.md#install-as-an-app)**.
 
 ---
 
@@ -73,6 +56,8 @@ Once installed, the app works fully offline — no internet connection needed at
 | File | Purpose |
 |------|---------|
 | `index.html` | The complete timer app (single HTML file, no build step) |
+| `HELP.md` | Help Guide (also opened by the Help button in the app) |
+| `ZOOM-BACKGROUND.md` | Using the timer as a Zoom camera or background with Meld Studio (Mac) |
 | `manifest.json` | PWA manifest — tells browsers this is an installable app |
 | `sw.js` | Service worker — caches everything for offline use |
 | `icons/` | App icons for home screen (192px, 512px, 180px) |

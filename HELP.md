@@ -2,9 +2,29 @@
 
 **Westlake Toastmasters Speech Timing Tool — v1.5.3**
 
+> 🎥 **Timing on Zoom?** Show the timer colours as your camera, or as a background behind you: **[Zoom Speech Timer Background](./ZOOM-BACKGROUND.md)** (Mac, free Meld Studio app).
+
 ---
 
-## 🎬 Quick Start: Demonstration Mode
+## Contents
+
+- [Quick Start: Demonstration Mode](#quick-start-demonstration-mode)
+- [Custom Speech Times](#custom-speech-times)
+- [Editing the Speech Log](#editing-the-speech-log)
+- [Timer Role Introduction Script](#timer-role-introduction-script)
+- [Colour System](#colour-system)
+- [Speech Type Presets](#speech-type-presets)
+- [Controls](#controls)
+- [Overtime Features](#overtime-features)
+- [Count Down and Competition Mode](#count-down-and-competition-mode)
+- [Mid-Speech Editing](#mid-speech-editing)
+- [Install as an App](#install-as-an-app)
+- [Zoom Speech Timer Background](./ZOOM-BACKGROUND.md)
+- [Version History](#version-history)
+
+---
+
+## Quick Start: Demonstration Mode
 
 The fastest way to learn the timer is to try the **Demonstration** mode:
 
@@ -19,7 +39,7 @@ This is perfect for showing the audience what the colours mean at the start of a
 
 ---
 
-## ⏱️ Custom Speech Times
+## Custom Speech Times
 
 To time a speech with non-standard durations:
 
@@ -32,7 +52,7 @@ To time a speech with non-standard durations:
 
 ---
 
-## 📝 Editing the Speech Log
+## Editing the Speech Log
 
 The newest speaker is always at the top: days run newest first, and so do the speeches within each day. The log jumps back to the top whenever a speech is recorded, and whenever you open the log or switch full screen on or off.
 
@@ -49,7 +69,7 @@ The status badge shows the time difference in m:ss format (e.g. "Within-time (0:
 
 ---
 
-## 🎤 Timer Role Introduction Script
+## Timer Role Introduction Script
 
 Click the **Timer Script** button at the top of the app to see a ready-made introduction script for the Timer role. Use this at the start of a meeting to explain the timing system to the audience.
 
@@ -147,7 +167,35 @@ While the timer is running, you can still change:
 
 ## Install as an App
 
-This timer can be installed as a standalone app on your phone or computer. See the [README](./README.md) for installation instructions for iPhone, Android, and desktop.
+The timer can be installed as an app on your phone or computer. It then opens from your home screen or applications like any other app.
+
+Open the live app: [theonelevel-com.github.io/speech-timer](https://theonelevel-com.github.io/speech-timer/)
+
+### iPhone / iPad (Safari)
+
+1. Open the live link above in **Safari**
+2. Tap the **Share** button (square with arrow)
+3. Scroll down and tap **"Add to Home Screen"**
+4. Tap **"Add"** — the app appears on your home screen with the TM♥ icon
+
+### Android (Chrome)
+
+1. Open the live link above in **Chrome**
+2. Tap the **three-dot menu** (⋮) in the top right
+3. Tap **"Add to Home Screen"** or **"Install app"**
+4. Tap **"Install"** — the app appears in your app drawer
+
+### Desktop (Chrome / Edge)
+
+1. Open the live link in Chrome or Edge
+2. Click the **install icon** in the address bar (or go to Menu → "Install Speech Timer")
+3. The app opens in its own window and is available from your applications
+
+You can also tap **Install App** at the top of the timer, where your browser supports it.
+
+Once installed, the app works fully offline, so you don't need an internet connection at your Toastmasters meeting.
+
+[↑ Back to contents](#contents)
 
 ---
 
