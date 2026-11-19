@@ -86,6 +86,9 @@
     text-align: center; user-select: none;
   }
   .phase-label { font-size: 1.05rem; font-weight: 500; text-align: center; height: 26px; opacity: 0.8; }
+  /* Competition mode: colour only, nothing that gives the time away */
+  html.competition .timer-display, html.competition .phase-label,
+  html.competition .progress-bar-container, html.competition .time-hints { visibility: hidden; }
 
   .progress-bar-container {
     width: min(460px, calc(100% - 32px)); margin: 8px 16px 0; height: 6px;
@@ -548,6 +551,11 @@
     </div>
   </div>
 
+  <div class="control-row checkbox-row">
+    <input type="checkbox" id="competitionToggle">
+    <label for="competitionToggle"><strong>Competition</strong> mode (colour only, time hidden)</label>
+  </div>
+
   <div style="font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; opacity:0.6; margin-bottom:6px; margin-top:4px;">Overtime</div>
 
   <div class="control-row checkbox-row">
@@ -602,7 +610,7 @@
 <div class="footer">
   <a href="https://www.westlaketoastmasters.co.za" target="_blank" rel="noopener">www.westlaketoastmasters.co.za</a>
   <span style="opacity:0.3; margin:0 6px;">|</span>
-  <a href="https://github.com/theonelevel-com/speech-timer/" target="_blank" rel="noopener">v1.5.2</a><br>
+  <a href="https://github.com/theonelevel-com/speech-timer/" target="_blank" rel="noopener">v1.5.3</a><br>
   <script src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
   <script>kofiwidget2.init('Click here to buy me a coffee', '#2d3436', 'theonelevel_com');kofiwidget2.draw();</script>
 </div>
@@ -640,6 +648,10 @@
     <div class="settings-row" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
       <label for="settingsPhaseSound" style="font-size:0.85rem; font-weight:500;">Phase sound cues</label>
       <input type="checkbox" id="settingsPhaseSound" style="width:18px; height:18px; accent-color:var(--accent);">
+    </div>
+    <div class="settings-row" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+      <label for="settingsCountDown" style="font-size:0.85rem; font-weight:500;">Count down to red</label>
+      <input type="checkbox" id="settingsCountDown" style="width:18px; height:18px; accent-color:var(--accent);">
     </div>
     <div class="settings-row" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
       <label style="font-size:0.85rem; font-weight:500;">Check for updates</label>
@@ -687,7 +699,7 @@
 </div>
 
 <script>
-const APP_VERSION = '1.5.2';
+const APP_VERSION = '1.5.3';
 const presets = {
   standard:    { green: 300, yellow: 360, red: 420 },
   icebreaker:  { green: 240, yellow: 300, red: 360 },
@@ -706,6 +718,7 @@ let currentPhase = 'white', audioCtx = null, flashInterval = null, flashState = 
 let alarmRepeatInterval = null, isDemo = false, demoTimeout = null, flashingActive = false;
 let vibrateEnabled = false;
 let phaseSoundEnabled = false;
+let countDownEnabled = false;
 
 const $ = id => document.getElementById(id);
 const timerDisplay = $('timerDisplay'), phaseLabel = $('phaseLabel'), progressBar = $('progressBar');
@@ -722,6 +735,12 @@ const resetDialog = $('resetDialog');
 function fmtTime(sec) {
   const s = Math.max(0, Math.round(sec));
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+}
+// What the big display shows: elapsed time, or time left to red (negative once past it)
+function renderDisplay() {
+  if (!countDownEnabled) { timerDisplay.textContent = fmtTime(elapsedSeconds); return; }
+  const left = getTimes().red - elapsedSeconds;
+  timerDisplay.textContent = left < 0 ? '-' + fmtTime(-left) : fmtTime(left);
 }
 function parseMSS(str) {
   str = (str || '').trim();
@@ -828,7 +847,7 @@ function updatePhaseFromElapsed() {
 }
 
 function tick() {
-  elapsedSeconds++; timerDisplay.textContent = fmtTime(elapsedSeconds);
+  elapsedSeconds++; renderDisplay();
   const t = getTimes();
   if (elapsedSeconds >= t.red) { if (!flashInterval) setPhase('red'); }
   else if (elapsedSeconds >= t.yellow) setPhase('yellow');
@@ -1041,7 +1060,7 @@ function doResetImmediate() {
   clearInterval(timerInterval); stopFlashing(); stopAlarmRepeat();
   if (demoTimeout) { clearTimeout(demoTimeout); demoTimeout = null; }
   running = false; paused = false; isDemo = false; flashingActive = false; elapsedSeconds = 0;
-  timerDisplay.textContent = '0:00'; phaseLabel.innerHTML = '&nbsp;'; progressBar.style.width = '0%';
+  renderDisplay(); phaseLabel.innerHTML = '&nbsp;'; progressBar.style.width = '0%';
   startBtn.textContent = 'Start'; startBtn.disabled = false;
   finishBtn.disabled = true; resetBtn.disabled = true; speakerName.value = '';
   const isDark = document.body.classList.contains('dark-mode');
@@ -1096,13 +1115,13 @@ flashToggle.addEventListener('change', () => {
 });
 speechType.addEventListener('change', () => {
   customRow.style.display = speechType.value === 'custom' ? 'flex' : 'none';
-  updateHints(); if (running || paused) updatePhaseFromElapsed();
+  updateHints(); renderDisplay(); if (running || paused) updatePhaseFromElapsed();
   isDemo = speechType.value === 'demo';
   if (isDemo && (running || paused)) finishBtn.disabled = false;
   else if (running || paused) finishBtn.disabled = false;
 });
 ['customGreen','customYellow','customRed'].forEach(id => {
-  $(id).addEventListener('input', () => { updateHints(); if (running || paused) updatePhaseFromElapsed(); });
+  $(id).addEventListener('input', () => { updateHints(); renderDisplay(); if (running || paused) updatePhaseFromElapsed(); });
 });
 startBtn.addEventListener('click', startTimer);
 finishBtn.addEventListener('click', finishSpeech);
@@ -1139,6 +1158,23 @@ function loadDarkMode() {
 }
 $('darkModeBtn').addEventListener('click', () => applyDarkMode(!document.body.classList.contains('dark-mode')));
 $('settingsDarkMode').addEventListener('change', () => applyDarkMode($('settingsDarkMode').checked));
+
+// ── Count down to red (default off, remembered per device) ──
+function applyCountDown(enabled) {
+  countDownEnabled = enabled;
+  $('settingsCountDown').checked = enabled;
+  try { localStorage.setItem('speechTimerCountDown', enabled ? '1' : '0'); } catch(e) {}
+  renderDisplay();
+}
+function loadCountDown() {
+  try { applyCountDown(localStorage.getItem('speechTimerCountDown') === '1'); } catch(e) { applyCountDown(false); }
+}
+$('settingsCountDown').addEventListener('change', () => applyCountDown($('settingsCountDown').checked));
+
+// ── Competition mode: colour only (per session, not remembered) ──
+$('competitionToggle').addEventListener('change', () => {
+  document.documentElement.classList.toggle('competition', $('competitionToggle').checked);
+});
 
 // ── Phase sound cues (default off) ──
 function applyPhaseSound(enabled) {
@@ -1399,6 +1435,7 @@ activeIndicator = 'white';
 disableFlashToggle();
 loadDarkMode();
 loadPhaseSound();
+loadCountDown();
 loadLog();
 refreshSpeakerDatalist();
 

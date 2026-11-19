@@ -1,6 +1,6 @@
 # Speech Timer — Help Guide
 
-**Westlake Toastmasters Speech Timing Tool — v1.5.2**
+**Westlake Toastmasters Speech Timing Tool — v1.5.3**
 
 ---
 
@@ -117,6 +117,22 @@ The timer uses the standard Toastmasters traffic-light system:
 
 ---
 
+## Count Down and Competition Mode
+
+### Count down to red
+- Turn on **Count down to red** in **Settings**. It is remembered on this device, so it becomes your default
+- The timer starts at the red (maximum) time and counts down to 0:00
+- Once the speaker passes red it keeps going below zero: **-0:01**, **-0:02** and so on
+- The colours, alarm and flashing work exactly as before, and the Speech Log still records the real speaking time
+
+### Competition mode
+- Tick **Competition mode** on the main screen before (or during) a speech
+- The time, the phase label, the progress bar and the colour hints are all hidden, so the speaker sees **only the colour**
+- Timing and recording carry on as normal: press **Finished** and the actual time goes into the Speech Log
+- It is not remembered, so it switches off when the app is reloaded
+
+---
+
 ## Mid-Speech Editing
 
 While the timer is running, you can still change:
@@ -146,6 +162,7 @@ This timer can be installed as a standalone app on your phone or computer. See t
 | v1.5.0 | Fixed ko-fi widget offline caching, added optional phase-change sound cues (off by default), undo for deleted log entries, bigger sticky title with a second sticky timer block underneath, unbolded sub-header lines |
 | v1.5.1 | Fixed mobile speech log alignment — Type now gets a label so it lines up with Time/Red, and the delete (✕) button sits at the right of the name row instead of the left |
 | v1.5.2 | Added a full-screen button to the Speech Log toolbar; renamed "Export CSV" to "Export" |
+| v1.5.3 | Added "Count down to red" setting (goes negative past red, e.g. -0:01) and a colour-only Competition mode that hides the time |
 
 ---
 

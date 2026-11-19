@@ -10,7 +10,7 @@ A web-based speech timer for Toastmasters meetings. Works in any browser, instal
 
 ## Version
 
-**v1.5.2** — Westlake Toastmasters
+**v1.5.3** — Westlake Toastmasters
 
 ---
 
@@ -19,6 +19,8 @@ A web-based speech timer for Toastmasters meetings. Works in any browser, instal
 - **Colour-coded timing** — screen changes from White → Green → Yellow → Red as the speaker progresses
 - **Preset speech types** — Standard (5–7 min), Ice Breaker (4–6 min), Table Topics (1–2 min), Evaluation (2–3 min)
 - **Custom timing** — set your own Green / Yellow / Red thresholds in m:ss format
+- **Count down to red** — optional setting; counts down to the red time, then shows overtime as -0:01, -0:02…
+- **Competition mode** — colour only, with the time hidden from the speaker
 - **Demonstration mode** — cycles through all colours in 20 seconds for testing
 - **Overtime alarm** — optional repeating audio alarm 30 seconds after red (every 15s)
 - **Overtime flashing** — red/white screen flash 1 minute past red (epilepsy-safe 1 Hz frequency, can be disabled)
