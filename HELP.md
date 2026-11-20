@@ -2,7 +2,7 @@
 
 **Westlake Toastmasters Speech Timing Tool — v1.5.3**
 
-> 🎥 **Timing on Zoom?** Show the timer colours as your camera, or as a background behind you: **[Zoom Speech Timer Background](./ZOOM-BACKGROUND.md)** (Mac, free Meld Studio app).
+> 🎥 **Timing on Zoom?** Show the timer colours as your camera, or as a background behind you: **[Zoom Speech Timer Background](./ZOOM-BACKGROUND.md)** (Mac and Windows, with the free Meld Studio app).
 
 ---
 

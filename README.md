@@ -57,7 +57,7 @@ The timer installs on iPhone, iPad, Android and desktop, and works offline once 
 |------|---------|
 | `index.html` | The complete timer app (single HTML file, no build step) |
 | `HELP.md` | Help Guide (also opened by the Help button in the app) |
-| `ZOOM-BACKGROUND.md` | Using the timer as a Zoom camera or background with Meld Studio (Mac) |
+| `ZOOM-BACKGROUND.md` | Using the timer as a Zoom camera or background with Meld Studio (Mac and Windows) |
 | `manifest.json` | PWA manifest — tells browsers this is an installable app |
 | `sw.js` | Service worker — caches everything for offline use |
 | `icons/` | App icons for home screen (192px, 512px, 180px) |
